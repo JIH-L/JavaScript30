@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrumKit</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }         
+        .keys{
+            background-image: url(img/drums-conceptual-image2.jpg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .key{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1rem;
+            padding: 1rem .5rem;
+            width: 50px;
+            border: 2px solid gray;
+            text-align: center;
+            font-size: 12px;
+            color: white;
+            transition: all 0.07s;
+            background-color: rgba(29, 29, 29, 0.829);
+        }
+        .playing{
+            transform: scale(1.1);
+            border-color: yellow;
+            box-shadow: 0 0 10px yellow;
+        }
+        kbd{
+            display: block;
+            font-size: 2rem;
+        }
+        span{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="keys">
+        <div data-key="65" class="key">
+            <kbd>A</kbd>
+            <span class="sound">BDRUM</span>
+        </div>
+        <div data-key="83" class="key">
+            <kbd>S</kbd>
+            <span class="sound">HIHAT</span>
+        </div>
+        <div data-key="68" class="key">
+            <kbd>D</kbd>
+            <span class="sound">TIM</span>
+        </div>
+        <div data-key="70" class="key">
+            <kbd>F</kbd>
+            <span class="sound">OPENHAT</span>
+        </div>
+        <div data-key="71" class="key">
+            <kbd>G</kbd>
+            <span class="sound">SNARE</span>
+        </div>
+        <div data-key="72" class="key">
+            <kbd>H</kbd>
+            <span class="sound">TOM</span>
+        </div>
+    </div>
+    
+    <audio data-key="65" src="sound/80s-Bdrum1.mp3"></audio>
+    <audio data-key="83" src="sound/80s-HHCLOSE1.mp3"></audio>
+    <audio data-key="68" src="sound/80s-TAMB1.mp3"></audio>
+    <audio data-key="70" src="sound/80s-HHOPEN2.mp3"></audio>
+    <audio data-key="71" src="sound/80s-SNARE1.mp3"></audio>
+    <audio data-key="72" src="sound/80s-TOM1.mp3"></audio>
+
+
+
+    <script>
+        function playSound(e){
+            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+            if(!audio) return;
+            audio.currentTime=0; // rewind to the start
+            audio.play();
+            key.classList.add("playing")
+        }
+        
+        function removeTransition(e){
+            if(e.propertyName!=='transform')return;
+            this.classList.remove("playing");
+        }
+        const keys = document.querySelectorAll(".key");
+        keys.forEach(key=>key.addEventListener('transitionend',removeTransition));
+        window.addEventListener('keydown',playSound);
+    </script>
+</body>
+</html>
