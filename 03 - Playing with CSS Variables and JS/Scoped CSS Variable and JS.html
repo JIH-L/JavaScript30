@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoped CSS Variable and JS</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        :root{
+            --base:#ffc600;
+            --spacing:10px;
+            --blur:10px;
+        }
+        .controls{
+            margin-bottom: 2rem;
+        }
+        img {
+            padding:var(--spacing);
+            background:var(--base);
+            filter: blur(var(--blur));
+            width: 40%;
+        }
+        .h1{
+            color: var(--base);
+        }
+    </style>
+</head>
+<body>
+    <h1>Update CSS Variable with <span class="h1">JS</span></h1>
+
+    <div class="controls">
+        <label for="spacing">Spacing:</label>
+        <input type="range" name="spacing" id="" min="10" max="200" value="10" data-size="px">
+
+        <label for="blur">Blur:</label>
+        <input type="range" name="blur" min="0" max="25" value="10" data-size="px">
+
+        <label for="base">Base Color</label>
+        <input type="color" name="base" id="" value="#ffc600">
+    </div>
+
+    <img src="img/test.jpg" alt="">
+</body>
+<script>
+    // 抓取 class="controls" 裡的 input
+    const inputs = document.querySelectorAll(".controls input"); 
+
+    function handleUpdate(){
+        // 抓取 data-size 的 px
+        const suffix = this.dataset.size || ''; 
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    inputs.forEach(input => input.addEventListener('change',handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove',handleUpdate));
+</script>
+</html>
